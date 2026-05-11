@@ -38,7 +38,7 @@ enddef
 
 def FilterMenu(id: number, key: string): bool
     var win_cfg = popup_getoptions(id)
-    var current_filter = substitute(win_cfg.title, '^ Filter: \(.*\) $', '\1', '')
+    var current_filter = substitute(win_cfg.title, '^ Command Filter: \(.*\) $', '\1', '')
 
     var handled = false
     if key == "\<BS>"
@@ -66,7 +66,7 @@ def FilterMenu(id: number, key: string): bool
 
         var display = mapnew(filtered_items, FormatLine)
         popup_settext(id, display)
-        popup_setoptions(id, {title: $" Filter: {current_filter} "})
+        popup_setoptions(id, {title: $" Command Filter: {current_filter} "})
     endif
 
     return true
@@ -80,7 +80,7 @@ export def Open(command_list: list<any>, opts: dict<any> = {})
     var popup_opts: dict<any> = {
         callback: CommandSelected,
         filter: FilterMenu,
-        title: has_key(opts, 'title') ? $" {opts['title']} " : ' Filter:  ',
+        title: has_key(opts, 'title') ? $" {opts['title']} " : ' Command Filter:  ',
         border: [1, 1, 1, 1],
         padding: [0, 1, 0, 1],
         cursorline: true,
