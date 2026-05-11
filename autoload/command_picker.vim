@@ -2,6 +2,8 @@ vim9script
 
 var filtered_items: list<any> = []
 var current_command_list: list<any> = []
+var current_filter: string = ""
+var filter_title: string = ""
 
 def FormatLine(_: any, val: list<any>): string
     return printf("%-30s :%s", val[0], val[1])
@@ -37,13 +39,10 @@ def CommandSelected(id: number, result: number)
 enddef
 
 def FilterMenu(id: number, key: string): bool
-    var win_cfg = popup_getoptions(id)
-    var current_filter = substitute(win_cfg.title, '^ Command Filter: \(.*\) $', '\1', '')
-
     var handled = false
-    if key == "\<BS>"
-        var filter_len = strlen(current_filter)
-        current_filter = (filter_len > 0) ? slice(current_filter, 0, filter_len - 1) : ""
+    if key == "\<BS>" || key == "\<C-h>"
+        var filter_len = strchars(current_filter)
+        current_filter = (filter_len > 0) ? strcharpart(current_filter, 0, filter_len - 1) : ""
         handled = true
     elseif key == "\<C-u>"
         current_filter = ""
@@ -55,7 +54,7 @@ def FilterMenu(id: number, key: string): bool
         handled = popup_filter_menu(id, key)
     endif
 
-    if handled && key =~ '^\p$\|\<BS\>\|\<C-u\>'
+    if handled && (key =~ '^\p$' || key == "\<BS>" || key == "\<C-h>" || key == "\<C-u>")
         var fuzzy = substitute(current_filter, ' ', '.*', 'g')
         filtered_items = []
         for item in current_command_list
@@ -66,7 +65,7 @@ def FilterMenu(id: number, key: string): bool
 
         var display = mapnew(filtered_items, FormatLine)
         popup_settext(id, display)
-        popup_setoptions(id, {title: $" Command Filter: {current_filter} "})
+        popup_setoptions(id, {title: $" {filter_title}: {current_filter} "})
     endif
 
     return true
@@ -75,12 +74,15 @@ enddef
 export def Open(command_list: list<any>, opts: dict<any> = {})
     current_command_list = command_list
     filtered_items = copy(current_command_list)
+    current_filter = ""
+    filter_title = get(opts, 'title', 'Command Filter')
+
     var options = mapnew(filtered_items, FormatLine)
 
     var popup_opts: dict<any> = {
         callback: CommandSelected,
         filter: FilterMenu,
-        title: has_key(opts, 'title') ? $" {opts['title']} " : ' Command Filter:  ',
+        title: $" {filter_title}:  ",
         border: [1, 1, 1, 1],
         padding: [0, 1, 0, 1],
         cursorline: true,
