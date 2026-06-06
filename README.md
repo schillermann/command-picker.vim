@@ -1,11 +1,11 @@
-# vim-command-picker
+# Command Templates
 
-A simple, fuzzy-searchable popup menu for executing Vim commands.
+A simple, fuzzy-searchable command templates picker for executing Vim commands.
 
 ## Installation
 
 Move this folder to your Vim package directory:
-`~/.vim/pack/custom/start/vim-command-picker`
+`~/.vim/pack/my_category/start/command-templates`
 
 ## Usage
 
