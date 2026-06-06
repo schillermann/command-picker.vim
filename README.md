@@ -11,7 +11,7 @@ Move this folder to your Vim package directory:
 
 ### In Vim9Script
 ```vim
-import autoload 'command_picker.vim'
+import autoload 'command_templates.vim'
 
 const my_commands = [
     ['search and replace on line under cursor', 's/old/new/g', 9],
@@ -28,13 +28,13 @@ const opts = {
     borderstyle: 'rounded',      # Border shape (single, double, thick, rounded, ascii)
 }
 
-command_picker.Open(my_commands, opts)
+command_templates.Open(my_commands, opts)
 ```
 
 ### Via Command
 
 ```vim
-:CommandPicker [['search and replace on line under cursor', 's/old/new/g', 9], ['search and replace in file', '%s/old/new/g']]
+:CommandTemplates [['search and replace on line under cursor', 's/old/new/g', 9], ['search and replace in file', '%s/old/new/g']]
 ```
 
 ### Configuration Options (`opts`)

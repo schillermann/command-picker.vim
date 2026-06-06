@@ -7,14 +7,14 @@ var filter_title: string = ""
 var max_desc_width: number = 30
 
 def InitProps()
-    if empty(prop_type_get('CommandPickerDesc'))
-        prop_type_add('CommandPickerDesc', {highlight: 'Identifier'})
+    if empty(prop_type_get('CommandTemplatesDesc'))
+        prop_type_add('CommandTemplatesDesc', {highlight: 'Identifier'})
     endif
-    if empty(prop_type_get('CommandPickerCmd'))
-        prop_type_add('CommandPickerCmd', {highlight: 'Statement'})
+    if empty(prop_type_get('CommandTemplatesCmd'))
+        prop_type_add('CommandTemplatesCmd', {highlight: 'Statement'})
     endif
-    if empty(prop_type_get('CommandPickerSep'))
-        prop_type_add('CommandPickerSep', {highlight: 'Comment'})
+    if empty(prop_type_get('CommandTemplatesSep'))
+        prop_type_add('CommandTemplatesSep', {highlight: 'Comment'})
     endif
 enddef
 
@@ -41,7 +41,7 @@ def FormatLine(_: any, val: list<any>): dict<any>
     return {
         text: text,
         props: [
-            {col: len(desc) + len(padding) + 1, length: len(cmd), type: 'CommandPickerCmd'}
+            {col: len(desc) + len(padding) + 1, length: len(cmd), type: 'CommandTemplatesCmd'}
         ]
     }
 enddef
